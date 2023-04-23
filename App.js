@@ -1,20 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import GestureHandler from "./GestureHandler";
+import RightView from "./RightView";
+import LeftView from "./LeftView";
+import TopView from "./TopView";
+import BottomView from "./BottomView";
+import CenterView from "./CenterView";
 
 export default function App() {
+  const views = {
+    center: { left: "left", right: "right", up: "top", down: "bottom" },
+    left: { right: "center" },
+    right: { left: "center" },
+    top: { down: "center" },
+    bottom: { up: "center" },
+  };
+
+  const [activeView, setActiveView] = useState("center");
+
+  const handleSwipe = (direction) => {
+    console.log("Gesto detectado:", direction); // Agrega esta línea
+    setActiveView((currentView) => {
+      const newView = views[currentView][direction];
+      console.log("Vista actual:", currentView, "Nueva vista:", newView); // Agrega esta línea
+      return newView ? newView : currentView;
+    });
+  };
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <GestureHandler
+      onSwipeLeft={() => handleSwipe("left")}
+      onSwipeRight={() => handleSwipe("right")}
+      onSwipeUp={() => handleSwipe("up")}
+      onSwipeDown={() => handleSwipe("down")}
+    >
+      {activeView === "right" && <LeftView />}
+      {activeView === "left" && <RightView />}
+      {activeView === "top" && <BottomView />}
+      {activeView === "bottom" && <TopView />}
+      {activeView === "center" && <CenterView />}
+    </GestureHandler>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
