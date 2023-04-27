@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import firebase from './firebaseConfig';
+
 import GestureHandler from "./GestureHandler";
 import RightView from "./RightView";
 import LeftView from "./LeftView";
@@ -26,7 +28,7 @@ export default function App() {
     });
   };
 
-  return (
+  return ( // Agrega el componente GestureHandler
     <GestureHandler
       onSwipeLeft={() => handleSwipe("left")}
       onSwipeRight={() => handleSwipe("right")}
@@ -41,4 +43,3 @@ export default function App() {
     </GestureHandler>
   );
 }
-
